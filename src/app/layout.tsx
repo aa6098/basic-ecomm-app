@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Montserrat, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { connectToMongoDB } from "./config/mongodb-config";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 const montserrat = Montserrat({
   variable: "--font-mont",
@@ -16,13 +17,23 @@ export const metadata: Metadata = {
   description: "Basic ecommerce app with next app",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  await connectToMongoDB();
   return (
-    <html lang="en" className={cn("h-full", "antialiased", montserrat.variable, "font-sans", inter.variable)}>
+    <html
+      lang="en"
+      className={cn(
+        "h-full",
+        "antialiased",
+        montserrat.variable,
+        "font-sans",
+        inter.variable,
+      )}
+    >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
