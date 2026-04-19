@@ -4,6 +4,8 @@ import { IUser } from "@/interfaces";
 import UserModel from "../models/user-model";
 import { email } from "zod";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import Cookies from "js-cookie"
 
 export const registerUser = async (payload: Partial<IUser>) => {
   try {
@@ -24,7 +26,25 @@ export const loginUser = async (payload: Partial<IUser>) => {
   try {
     const userExists = await UserModel.findOne({ email: payload.email });
     if (!userExists) throw new Error("User does not exists");
-    console.log(userExists);
+
+    const isMatch = await bcrypt.compare(payload.password!, userExists.password  );
+
+    if (!isMatch) {
+      throw new Error("Password don't match");
+    }
+
+    const token = jwt.sign(
+      {
+        id: userExists._id,
+        email: userExists.email
+      },
+      process.env.JWT_SECRET!,
+      {expiresIn: "1d"}
+    );
+    console.log(token)
+      return { success: true, message: "Successful" , data: token};
+       
+    
   } catch (error: any) {
     return { success: false, message: error.message };
   }

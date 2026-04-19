@@ -29,7 +29,8 @@ import {
 } from "@/components/ui/input-group";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 const formSchema = z.object({
   password: z
     .string()
@@ -39,6 +40,8 @@ const formSchema = z.object({
 });
 
 function Login() {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,7 +52,16 @@ function Login() {
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
       const response = await loginUser(data);
-      alert(JSON.stringify(response));
+     //
+              alert(JSON.stringify(response))
+
+      if (response.success){
+        alert("success")
+        Cookies.set("token", response.data)
+        router.push("/products")
+      } else {
+        throw Error("Failed to login")
+      }
     } catch (error: any) {}
   }
   return (
