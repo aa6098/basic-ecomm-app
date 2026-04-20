@@ -5,7 +5,7 @@ import UserModel from "../models/user-model";
 import { email } from "zod";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import Cookies from "js-cookie"
+import Cookies from 'js-cookie'
 
 export const registerUser = async (payload: Partial<IUser>) => {
   try {
