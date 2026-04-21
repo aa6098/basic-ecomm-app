@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Montserrat, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { connectToMongoDB } from "./config/mongodb-config";
+import CustomLayout from "@/custom-layout";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -34,7 +35,8 @@ export default async function RootLayout({
         inter.variable,
       )}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <CustomLayout>{children}</CustomLayout></body>
     </html>
   );
 }

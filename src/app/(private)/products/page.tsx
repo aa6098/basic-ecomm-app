@@ -8,7 +8,7 @@ async function ProductsPage() {
   const userResponse = await getLoggedinUser();
   if (!userResponse.success){
     console.log(userResponse.message);
-    redirect("/login")
+    //redirect("/login")
   }
   const user:IUser = userResponse.data;
   console.log(user)
